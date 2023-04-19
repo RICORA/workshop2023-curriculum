@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
+<title>時間割</title>
+<link rel="manifest" href="./manifest.json">
+<style>
+    table {
+        border-collapse: collapse;
+    }
+    td {
+        border: solid 1px black;
+        padding: 0.5em;
+    }
+</style>
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js');
+    }
+
+    function parse(text) {
+        return text.split('\n').map(line => line.split(','));
+    }
+    function create_table(data) {
+        const table = document.createElement('table');
+        for (let i = 0; i < data.length; ++i) {
+            const tr = document.createElement('tr');
+            for (const column of data[i]) {
+                const th_or_td = document.createElement(i == 0 ? 'th' : 'td');
+                th_or_td.innerText = column;
+                tr.appendChild(th_or_td);
+            }
+            table.appendChild(tr);
+        }
+        return table;
+    }
+    fetch('data.csv', { method: 'GET' })
+        .then(response => response.text())
+        .then(text => document.body.appendChild(create_table(parse(text))));
+</script>
