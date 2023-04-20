@@ -459,6 +459,10 @@ self.addEventListener('fetch', _ => {});
 ```html
 <!DOCTYPE html>
 <!-- 中略 -->
+<title>時間割</title>
+<link rel="manifest" href="./manifest.json">
+<!-- 中略 -->
+<style>
 <script>
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./service-worker.js');
